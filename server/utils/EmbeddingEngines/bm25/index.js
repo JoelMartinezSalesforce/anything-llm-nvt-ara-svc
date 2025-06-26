@@ -20,9 +20,8 @@ class BM25Embedder {
   #namespace = null;
   #cacheDir = null;
   #dataPath = null;
-  #vocab = new Map(); // token -> integer id for sparse vectors
+  #vocab = new Map();
   #nextIdx = 0;
-
 
   constructor(namespace = "default") {
     this.#namespace = namespace;
@@ -51,10 +50,8 @@ class BM25Embedder {
 
   #init() {
     this.#index = bm25();
-    this.#index.defineConfig({ fldWeights: { body: 1 }});
-    this.#index.definePrepTasks([
-      this.#tokenizeAndStem
-    ]);
+    this.#index.defineConfig({ fldWeights: { body: 1 } });
+    this.#index.definePrepTasks([this.#tokenizeAndStem]);
 
     if (fs.existsSync(this.#dataPath)) {
       try {
@@ -69,10 +66,11 @@ class BM25Embedder {
 
   #tokenizeAndStem(text) {
     const tokens = [];
-    nlp.readDoc(text)
+    nlp
+      .readDoc(text)
       .tokens()
-      .filter(t => t.out(its.type) === "word" && !t.out(its.stopWordFlag))
-      .each(t => tokens.push(t.out(its.stem)));
+      .filter((t) => t.out(its.type) === "word" && !t.out(its.stopWordFlag))
+      .each((t) => tokens.push(t.out(its.stem)));
     return tokens;
   }
 
@@ -103,7 +101,7 @@ class BM25Embedder {
    * @param {Array<{id: string, body: string}>} docs
    */
   async addDocuments(docs) {
-    docs.forEach(doc => this.#index.addDoc(doc, doc.id));
+    docs.forEach((doc) => this.#index.addDoc(doc, doc.id));
     this.#index.consolidate();
     await this.#persist();
   }
@@ -133,15 +131,17 @@ class BM25Embedder {
     tokens.forEach((t) => (tf[t] = (tf[t] || 0) + 1));
 
     // Build sparse entries and sort by index (Milvus requires ascending order)
-    const entries = Object.keys(tf).map((tok) => {
-      return {
-        id: this.#idFor(tok),
-        w: tf[tok] / tokens.length, // normalised term‑frequency
-      };
-    }).sort((a, b) => a.id - b.id); // ensure ascending order
+    const entries = Object.keys(tf)
+      .map((tok) => {
+        return {
+          id: this.#idFor(tok),
+          w: tf[tok] / tokens.length, // normalised term‑frequency
+        };
+      })
+      .sort((a, b) => a.id - b.id); // ensure ascending order
 
     const indices = entries.map((e) => e.id);
-    const values  = entries.map((e) => e.w);
+    const values = entries.map((e) => e.w);
 
     return { indices, values };
   }
@@ -162,7 +162,7 @@ class BM25Embedder {
    */
   async reset() {
     this.#index = bm25();
-    this.#index.defineConfig({ fldWeights: { body: 1 }});
+    this.#index.defineConfig({ fldWeights: { body: 1 } });
     this.#index.definePrepTasks([this.#tokenizeAndStem]);
     await this.#persist();
     this.log(`Index for '${this.#namespace}' reset.`);

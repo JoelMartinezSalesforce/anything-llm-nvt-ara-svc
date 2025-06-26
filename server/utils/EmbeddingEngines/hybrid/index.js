@@ -10,12 +10,12 @@ const { NativeEmbedder } = require("../native");
 const { BM25Embedder } = require("../bm25");
 
 class HybridEmbedder {
-  /* ─────────────────────────── Private state ────────────────────────── */
+  /* Private state */
   #namespace = null;
   #dense = null;
   #sparse = null;
 
-  /* ─────────────────────────── Public props ─────────────────────────── */
+  /* Public props*/
   // BaseEmbedderProvider API surface
   model = "bm25-lexical"; // identifier for logs/analytics
   maxConcurrentChunks = null;
@@ -32,13 +32,12 @@ class HybridEmbedder {
 
     // Re-expose limits from dense embedder so existing logic keeps working
     this.maxConcurrentChunks = this.#dense.maxConcurrentChunks ?? 25;
-    this.embeddingMaxChunkLength =
-      this.#dense.embeddingMaxChunkLength ?? 1_000;
+    this.embeddingMaxChunkLength = this.#dense.embeddingMaxChunkLength ?? 1_000;
 
     this.#log("Initialized HybridEmbedder for namespace", namespace);
   }
 
-  /* ─────────────────────────── Utils ─────────────────────────── */
+  /* Utils*/
   #log(...args) {
     if (LOG_ENABLED) console.log(chalk.magenta("[HybridEmbedder]"), ...args);
   }
@@ -46,14 +45,14 @@ class HybridEmbedder {
     console.error(chalk.red("[HybridEmbedder]"), ...args);
   }
 
-  /* ────────────────────────── Core API ───────────────────────── */
+  /* Core API */
 
   /**
    * Embed a single text input and return `{ dense, sparse }` pair.
    */
   async embedTextInput(textInput) {
     this.#log("embedTextInput() called");
-    const [result] = await this.embedChunks(
+    const [result] = this.embedChunks(
       Array.isArray(textInput) ? textInput : [textInput]
     );
     return result;
@@ -87,13 +86,7 @@ class HybridEmbedder {
     }
   }
 
-  /* ───────────────────────── BM25 passthroughs ─────────────────────── */
-
-  async addDocuments(docs) {
-    this.#log("addDocuments() called", { docs: docs.length });
-    return this.#sparse.addDocuments(docs);
-  }
-
+  /* BM25 passthroughs */
   search(query, k = 10) {
     this.#log("search() called", { query, k });
     return this.#sparse.search(query, k);
