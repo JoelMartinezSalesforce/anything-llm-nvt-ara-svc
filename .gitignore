@@ -12,3 +12,5 @@ yarn.lock
 .idea
 .secrets
 server/storage/models/*
+volumes/
+
