@@ -18,7 +18,7 @@ jobs:
         uses: JamesIves/github-sponsors-readme-action@v1
         with:
           token: ${{ secrets.SPONSOR_PAT }}
-          file: 'README.md'
+          file: 'README_ANYTHINGLLM.md'
           organization: true
           active-only: false
           marker: 'all-sponsors'
@@ -28,7 +28,7 @@ jobs:
         id: auto-commit-action
         with:
           commit_message: 'Update Sponsors README'
-          file_pattern: 'README.md'
+          file_pattern: 'README_ANYTHINGLLM.md'
 
       - name: Generate PR if changes detected
         uses: peter-evans/create-pull-request@v7

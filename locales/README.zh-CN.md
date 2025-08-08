@@ -29,7 +29,7 @@
 </p>
 
 <p align="center">
-  <a href='../README.md'>English</a> · <b>简体中文</b> · <a href='./README.ja-JP.md'>日本語</a>
+  <a href='../README_ANYTHINGLLM.md'>English</a> · <b>简体中文</b> · <a href='./README.ja-JP.md'>日本語</a>
 </p>
 
 <p align="center">
@@ -200,7 +200,7 @@ _以下是一些与 AnythingLLM 兼容的应用程序，但并非由 Mintplex La
 
 ### 怎样关闭
 
-在服务器或 Docker 的 .env 设置中将 `DISABLE_TELEMETRY` 设置为 "true"，即可选择不参与遥测数据收集。你也可以在应用内通过以下路径操作：侧边栏 > `Privacy` （隐私） > 关闭遥测功能。 
+在服务器或 Docker 的 .env 设置中将 `DISABLE_TELEMETRY` 设置为 "true"，即可选择不参与遥测数据收集。你也可以在应用内通过以下路径操作：侧边栏 > `Privacy` （隐私） > 关闭遥测功能。
 
 ### 你们跟踪收集哪些信息？
 
@@ -214,7 +214,7 @@ _以下是一些与 AnythingLLM 兼容的应用程序，但并非由 Mintplex La
 
 您可以通过查找所有调用`Telemetry.sendTelemetry`的位置来验证这些声明。此外，如果启用，这些事件也会被写入输出日志，因此您也可以看到发送了哪些具体数据。**IP或其他识别信息不会被收集**。Telemetry远程信息收集的方案来自[PostHog](https://posthog.com/) - 一个开源的远程信息收集服务。
 
-我们非常重视隐私，且不用烦人的弹窗问卷来获取反馈，希望你能理解为什么我们想要知道该工具的使用情况，这样我们才能打造真正值得使用的产品。所有匿名数据 _绝不会_ 与任何第三方共享。 
+我们非常重视隐私，且不用烦人的弹窗问卷来获取反馈，希望你能理解为什么我们想要知道该工具的使用情况，这样我们才能打造真正值得使用的产品。所有匿名数据 _绝不会_ 与任何第三方共享。
 
 [在源代码中查看所有信息收集活动](https://github.com/search?q=repo%3AMintplex-Labs%2Fanything-llm%20.sendTelemetry\(&type=code)
 
