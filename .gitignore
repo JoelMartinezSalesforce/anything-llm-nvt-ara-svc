@@ -4,7 +4,6 @@ v-env
 
 node_modules
 __pycache__
-v-env
 .DS_Store
 aws_cf_deploy_anything_llm.json
 yarn.lock
